@@ -59,6 +59,11 @@ const animation = () =>
     // Animate testSphere
     testSphere.position.y = Math.sin(elapsedTime)
 
+    //Scale Spheer
+    //testSphere.scale.x=1
+    //testSphere.scale.y=1
+    //testSphere.scale.z=1
+
     // Animate testBox
     testBox.position.x = Math.sin(elapsedTime)
     testBox.position.z = Math.sin(2*elapsedTime)
