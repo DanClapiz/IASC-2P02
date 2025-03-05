@@ -63,13 +63,48 @@ cave.rotation.y = Math.PI*0.5
 cave.receiveShadow = true
 scene.add(cave)
 
-// Objects 
-const torusKnotGeometery = new THREE.TorusKnotGeometry(1, 0.2)
-const torusKnotMaterial = new THREE.MeshNormalMaterial()
-const torusKnot = new THREE.Mesh(torusKnotGeometery, torusKnotMaterial)
-torusKnot.position.set(6, 1, 0)
-torusKnot.castShadow = true
-scene.add(torusKnot)
+// Tube 
+class CustomSinCurve extends THREE.Curve {
+
+	constructor( scale = 1 ) {
+		super();
+		this.scale = scale;
+	}
+    getPoint( t, optionalTarget = new THREE.Vector3() ) {
+
+		const tx = t * 3 - 1.5;
+		const ty = Math.sin(Math.PI *t);
+		const tz = 0;
+
+		return optionalTarget.set( tx, ty, tz ).multiplyScalar( this.scale );
+	}
+}
+const path = new CustomSinCurve ( 1 )
+const tubeGeometry = new THREE.TubeGeometry( path, 64, 0.2, 8, false)
+const tubeMaterial = new THREE.MeshNormalMaterial()
+const tube = new THREE.Mesh(tubeGeometry, tubeMaterial)
+tube.position.set(6, -1, 0)
+tube.rotation.y = Math.PI*0.5
+tube.castShadow = true
+scene.add(tube)
+
+// Left Sphere
+const leftsphereGeometry = new THREE.SphereGeometry(0.5)
+const leftsphereMaterial = new THREE.MeshNormalMaterial()
+const leftSphere = new THREE.Mesh(leftsphereGeometry, leftsphereMaterial)
+leftSphere.position.set(6, 1.5, 1)
+leftSphere.castShadow = true
+
+scene.add(leftSphere)
+
+// Right Sphere
+const rightsphereGeometry = new THREE.SphereGeometry(0.5)
+const rightsphereMaterial = new THREE.MeshNormalMaterial()
+const rightSphere = new THREE.Mesh(rightsphereGeometry, rightsphereMaterial)
+rightSphere.position.set(6, 1.5, -1)
+rightSphere.castShadow = true
+
+scene.add(rightSphere)
 
 /************
  ** LIGHTS **
@@ -126,7 +161,6 @@ const animation = () =>
     const elapsedTime = clock.getElapsedTime()
 
     // Animate Objects
-    torusKnot.rotation.y = elapsedTime
 
     // Update directionalLightHelper
     directionalLightHelper.update()
