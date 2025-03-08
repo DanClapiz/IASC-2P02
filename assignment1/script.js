@@ -134,12 +134,7 @@ group.add( tail )
 
 scene.add(group)
 
-/************
- ** LIGHTS **
- ************/
-// Ambient Lights 
-//const ambientLight = new THREE. AmbientLight(0x404040)
-//scene.add(ambientLight)
+
 
 // Directional Light
 const directionalLight = new THREE.DirectionalLight(
@@ -198,29 +193,7 @@ document.querySelector('#fourth-change').onclick = function(){
     domObject.fourthChange = true
 }
 
-/********
- ** UI **
-*********/
-// UI
-/*
-const ui = new dat.GUI()
 
-const lightPositionFolder = ui.addFolder('Light Position')
-
-lightPositionFolder
-    .add(directionalLight.position,'y')
-    .min(-10)
-    .max(10)
-    .step(0.1)
-    .name('Y')
-
-lightPositionFolder
-    .add(directionalLight.position,'z')
-    .min(-10)
-    .max(10)
-    .step(0.1)
-    .name('Z')
-    */
 
 /********************
  ** ANIMATION LOOP **
