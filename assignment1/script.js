@@ -64,7 +64,42 @@ cave.rotation.y = Math.PI*0.5
 cave.receiveShadow = true
 scene.add(cave)
 
-// Tube 
+// Left leg
+const leftgeometry = new THREE.BoxGeometry( 0.5, 1.5, 0.5 ); 
+const leftmaterial = new THREE.MeshNormalMaterial(); 
+const leftLeg = new THREE.Mesh( leftgeometry, leftmaterial ); 
+leftLeg.position.set(7, 0, 0.7)
+leftLeg.castShadow = true
+scene.add( leftLeg )
+
+//Right leg
+const rightGeometry = new THREE.BoxGeometry( 0.5, 1.5, 0.5 ); 
+const rightMaterial = new THREE.MeshNormalMaterial(); 
+const rightLeg = new THREE.Mesh( rightGeometry, rightMaterial ); 
+rightLeg.position.set(7, 0, -1)
+rightLeg.castShadow = true
+scene.add( rightLeg )
+
+// head
+const headGeometry = new THREE.SphereGeometry(0.7)
+const headMaterial = new THREE.MeshNormalMaterial()
+const head = new THREE.Mesh(headGeometry, headMaterial)
+head.position.set(7, 2, 1)
+head.castShadow = true
+
+scene.add(head)
+
+// Body
+const bodyGeometry = new THREE.CapsuleGeometry(1, 1, 4, 8 )
+const bodyMaterial = new THREE.MeshNormalMaterial()
+const body = new THREE.Mesh( bodyGeometry, bodyMaterial ) 
+body.position.set(9, 1, 0)
+body.rotation.x = Math.PI*0.5
+body.castShadow = true
+
+scene.add( body )
+
+// Tail 
 class CustomSinCurve extends THREE.Curve {
 
 	constructor( scale = 1 ) {
@@ -81,31 +116,23 @@ class CustomSinCurve extends THREE.Curve {
 	}
 }
 const path = new CustomSinCurve ( 1 )
-const tubeGeometry = new THREE.TubeGeometry( path, 64, 0.2, 8, false)
-const tubeMaterial = new THREE.MeshNormalMaterial()
-const tube = new THREE.Mesh(tubeGeometry, tubeMaterial)
-tube.position.set(6, -1, 0)
-tube.rotation.y = Math.PI*0.5
-tube.castShadow = true
-scene.add(tube)
+const tailGeometry = new THREE.TubeGeometry( path, 64, 0.2, 8, false)
+const tailMaterial = new THREE.MeshNormalMaterial()
+const tail = new THREE.Mesh(tailGeometry, tailMaterial)
+tail.position.set(7, 0.3, -1.5)
+tail.rotation.y = Math.PI*0.3
+tail.castShadow = true
+scene.add(tail)
 
-// Left Sphere
-const leftsphereGeometry = new THREE.SphereGeometry(0.5)
-const leftsphereMaterial = new THREE.MeshNormalMaterial()
-const leftSphere = new THREE.Mesh(leftsphereGeometry, leftsphereMaterial)
-leftSphere.position.set(6, 1.5, 1)
-leftSphere.castShadow = true
+// Group
+const group = new THREE.Group()
+group.add( head )
+group.add( body )
+group.add( leftLeg)
+group.add( rightLeg) 
+group.add( tail )
 
-scene.add(leftSphere)
-
-// Right Sphere
-const rightsphereGeometry = new THREE.SphereGeometry(0.5)
-const rightsphereMaterial = new THREE.MeshNormalMaterial()
-const rightSphere = new THREE.Mesh(rightsphereGeometry, rightsphereMaterial)
-rightSphere.position.set(6, 1.5, -1)
-rightSphere.castShadow = true
-
-scene.add(rightSphere)
+scene.add(group)
 
 /************
  ** LIGHTS **
@@ -221,25 +248,27 @@ const animation = () =>
     // first-change
     if(domObject.firstChange)
     {
-        tube.rotation.y = elapsedTime
+        group.position.z= (Math.sin(elapsedTime) +0.5)
+        
     }
 
     //second-change
     if(domObject.secondChange)
     {
-        tube.rotation.x = elapsedTime
+        group.position.y= (Math.sin(elapsedTime) +0.5)
     }
 
     //third-change
     if(domObject.thirdChange)
     {
-        tube.position.y= (Math.sin(elapsedTime) +1) *2
+        leftLeg.rotation.z =(Math.sin(elapsedTime) + 1) *2
     }
+    
 
     //fourth-change
     if(domObject.fourthChange)
     {
-        tube.position.x= (Math.sin(elapsedTime) +1) *2
+        head.position.x = elapsedTime
     }
 
     // Update directionalLightHelper
