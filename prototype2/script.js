@@ -51,11 +51,11 @@ controls.enableDamping = true
  ************/
 
 // testSphere
-const sphereGeometry = new THREE.SphereGeometry(1)
-const sphereMaterial = new THREE.MeshNormalMaterial()
-const testSphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
+const torusKnotGeometry = new THREE.TorusKnotGeometry(1, 0.4, 64, 8 )
+const torusKnotMaterial = new THREE.MeshNormalMaterial()
+const torusKnot = new THREE.Mesh(torusKnotGeometry, torusKnotMaterial)
 
-scene.add(testSphere)
+scene.add(torusKnot)
 
 // Plane
 const planeGeometry = new THREE.PlaneGeometry(10, 10, 50, 50)
@@ -77,26 +77,33 @@ const ui = new dat.GUI()
 // UI Object
 const uiObject = {
     speed: 1,
-    distance: 1
+    distance: 1,
+    rotation: 1
 }
 
 // testSphere UI
-const sphereFolder = ui.addFolder('Sphere')
+const torusKnotFolder = ui.addFolder('TorusKnot')
 
-sphereFolder
+torusKnotFolder
     .add(uiObject, 'speed')
     .min(0.1)
     .max(10)
     .step(0.1)
     .name('Speed')
 
-sphereFolder
+torusKnotFolder
     .add(uiObject, 'distance')
     .min(0.1)
     .max(10)
     .step(0.1)
     .name('Distance')
 
+torusKnotFolder
+    .add(uiObject, 'rotation')
+    .min(0.1)
+    .max(10)
+    .step(0.1)
+    .name('Rotation')
 // plane UI
 const planeFolder = ui.addFolder('Plane')
 
@@ -114,8 +121,11 @@ const animation = () =>
     // Return elapsedTime
     const elapsedTime = clock.getElapsedTime()
 
-    // Animate Sphere
-    testSphere.position.y = Math.sin(elapsedTime * uiObject.speed) * uiObject.distance
+    // Animate torusKnot
+    torusKnot.position.y = Math.sin(elapsedTime * uiObject.speed) * uiObject.distance
+    
+    torusKnot.rotation.x= Math.sin(2)*((elapsedTime* uiObject.rotation) * uiObject.distance)
+    torusKnot.rotation.z= Math.sin(2)*((elapsedTime* uiObject.rotation) * uiObject.distance)
     
     // Update OrbitContols
     controls.update()
